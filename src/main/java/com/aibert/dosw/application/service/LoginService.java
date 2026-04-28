@@ -45,7 +45,12 @@ public class LoginService implements LoginUseCase {
         resetFailedAttempts(user);
 
         String token = jwtTokenService.generateToken(user.getEmail(), request.isRememberMe());
-        return LoginResponseDTO.builder().token(token).build();
+        return LoginResponseDTO.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .token(token)
+                .build();
     }
 
     private void checkLock(User user) {
