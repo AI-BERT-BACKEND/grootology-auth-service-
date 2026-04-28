@@ -61,7 +61,7 @@ public class LoginService implements LoginUseCase {
     }
 
     private void handleFailedAttempt(User user) {
-        int attempts = user.getFailedAttempts() + 1;
+        int attempts = (user.getFailedAttempts() == 0 ? 0 : user.getFailedAttempts()) + 1;
         LocalDateTime lockedUntil = attempts >= MAX_ATTEMPTS
                 ? LocalDateTime.now().plusMinutes(LOCK_MINUTES)
                 : user.getLockedUntil();

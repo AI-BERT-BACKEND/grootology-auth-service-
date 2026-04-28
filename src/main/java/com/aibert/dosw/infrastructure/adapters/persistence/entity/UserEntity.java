@@ -31,7 +31,7 @@ public class UserEntity {
     private boolean verified;
 
     @Column(name = "failed_attempts")
-    private int failedAttempts;
+    private Integer failedAttempts;
 
     @Column(name = "locked_until")
     private LocalDateTime lockedUntil;
