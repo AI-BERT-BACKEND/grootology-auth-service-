@@ -1,6 +1,6 @@
-# Nombre del Proyecto
+# AI.BERT - Auth
 
-> Breve descripción de una línea sobre qué hace el sistema y qué problema resuelve.
+> Microservicio de autenticación  para A.IBERT — maneja registro, login con JWT.
 
 ---
 
@@ -26,23 +26,18 @@
 
 ## Resumen Ejecutivo
 
-Descripción breve del proyecto:
+* Problema: Los estudiantes no tienen una plataforma unificada que gestione su identidad académica y les permita acceder de forma segura a sus datos de planificación.
+  
+* Solución: Microservicio independiente que maneja registro, autenticación con JWT, siendo la puerta de entrada a todos los demás módulos de A.IBERT.
 
-- Problema a resolver.
-- Solución propuesta.
-- Usuarios objetivo.
-- Impacto esperado.
+* Usuarios objetivo: Estudiantes universitarios de la ECI.
+  
+* Impacto esperado: Acceso seguro y centralizado para los 6 módulos del sistema, con sesiones protegidas.
 
 ## Alcance
 
 ### Incluye
-- Funcionalidad 1
-- Funcionalidad 2
-- Funcionalidad 3
-
-### No Incluye
-- Funcionalidades futuras
-- Restricciones del proyecto
+- Inicio de sesión
 
 ---
 
@@ -52,11 +47,10 @@ Descripción breve del proyecto:
 
 | Integrante | Rol | Responsabilidades |
 |-----------|------|------------------|
-| Sheldon Cooper | Arquitecto | Diseño del sistema |
-| Walter White | Backend | APIs y lógica |
-| Tony Stark | DevOps | Infraestructura |
-| Jesse Pinkman | Frontend | UI/UX |
-| R2-D2 | QA | Testing |
+| Mariana Parra | Lider |  Revisión, coordinación con otros equipos|
+| Dana Leal | Backend | UI/UX |
+| Andres Sabogal | DevOps | Infraestructura |
+| Nicolas Parrado| Arquitectura | Diseño del sistema |
 
 ---
 
@@ -64,13 +58,11 @@ Descripción breve del proyecto:
 
 ## Objetivo General
 
-Construir un sistema que ...
+Construir un microservicio de autenticación seguro que provea tokens JWT válidos para que los demás módulos de A.IBERT puedan autenticar peticiones.
 
 ## Objetivos Específicos
 
-- Objetivo 1
-- Objetivo 2
-- Objetivo 3
+- Generar y validar tokens JWT consumibles por los otros 5 microservicios
 
 ---
 
@@ -78,21 +70,19 @@ Construir un sistema que ...
 
 ## Contexto
 
-Descripción del contexto.
+A.IBERT es una plataforma de planificación académica compuesta por microservicios independientes. Para que funcionen de forma coordinada, todos necesitan identificar al usuario que hace cada petición de forma segura y sin acoplar su lógica de autenticación.
 
 ## Problema
 
-Problema principal identificado.
+No existe un mecanismo centralizado que gestione la identidad del estudiante y emita credenciales reconocidas por todos los módulos del sistema.
 
 ## Dificultades Actuales
 
-- Dificultad 1
-- Dificultad 2
-- Dificultad 3
+- Sin autenticación centralizada, cada microservicio tendría que manejar su propia lógica de login
 
 ## Solución Propuesta
 
-Descripción general del enfoque.
+Un microservicio dedicado (auth-service) que emite JWT firmados con una SECRET_KEY compartida. Cualquier microservicio puede verificar el token localmente sin consultar la base de datos de auth en cada petición.
 
 ---
 
@@ -104,18 +94,8 @@ Descripción general del enfoque.
 
 | ID | Requerimiento | Módulo |
 |----|---------------|--------|
-| RF-01 | Login de usuarios | Seguridad |
-| RF-02 | Gestión de datos | Core |
+| R01 | Login de usuarios | Autenticación |
 
----
-
-## Requerimientos No Funcionales
-
-| ID | Requerimiento | Métrica |
-|----|----------------|---------|
-| RNF-01 | Disponibilidad | 99.9% |
-| RNF-02 | Tiempo respuesta | < 2s |
-| RNF-03 | Seguridad | JWT / OAuth |
 
 ---
 
@@ -129,12 +109,15 @@ Descripción general del enfoque.
 
 ## Arquitectura General
 
-Descripción de arquitectura usada:
+El auth-service forma parte de una arquitectura de microservicios. Se comunica con los demás módulos a través del API Gateway (puerto 8000), que valida el JWT antes de redirigir cada petición.
 
-- Monolítica / Microservicios
-- Patrón MVC
-- Clean Architecture
-- Hexagonal (si aplica)
+Frontend (React) → API Gateway :8000 → auth-service :8001 → PostgreSQL.
+
+Patrón: MVC por capas (Controller → Service → Repository).
+
+El token JWT es verificable por cualquier microservicio usando la SECRET_KEY compartida.
+
+No hay comunicación directa entre auth-service y otros microservicios — todo pasa por el Gateway.
 
 ---
 
@@ -190,14 +173,7 @@ Descripción de arquitectura usada:
 | Sprint | Objetivo | Estado |
 |-------|----------|--------|
 | Sprint 1 | Setup proyecto | ✅ |
-| Sprint 2 | Core features | 🚧 |
 
-## Riesgos
-
-| Riesgo | Impacto | Mitigación |
-|--------|---------|------------|
-| Retrasos | Alto | Buffer |
-| Bugs críticos | Medio | Testing |
 
 ---
 
@@ -207,8 +183,7 @@ Descripción de arquitectura usada:
 
 - Unitarias
 - Integración
-- End to End
-- Carga
+
 
 ## Reporte
 
@@ -218,7 +193,7 @@ Descripción de arquitectura usada:
 
 # Cobertura
 
-Reporte generado con **JaCoCo** y analizado con **SonarCloud**
+Reporte generado con **JaCoCo** y analizado con **SonarQube**
 
 | Métrica | Cubierto | Total | Cobertura |
 |---|---|---|---|
