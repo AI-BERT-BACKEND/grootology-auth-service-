@@ -101,7 +101,7 @@ Un microservicio dedicado (auth-service) que emite JWT firmados con una SECRET_K
 
 ##  Análisis de Requerimientos
 
-- [Documento de análisis](docs/requisitos.md)
+- [Documento de análisis](https://docs.google.com/document/d/1hDlp96IDgt2vs_iwijBynB_lNn8PJxDX/edit?usp=sharing&ouid=111980033368663407661&rtpof=true&sd=true)
 
 ---
 
@@ -142,23 +142,20 @@ No hay comunicación directa entre auth-service y otros microservicios — todo 
 ## Contexto
 - [Diagrama de contexto](docs/diagramas/contexto.png)
 
-## Casos de Uso
-- [Casos de uso](docs/diagramas/casos-uso.png)
+
 
 ## Diagrama de Clases
-- [Diagrama de clases](docs/diagramas/clases.png)
+![DiagramadeClases.png](docs/uml/DiagramadeClases.png)
 
-## Componentes
-- [Diagrama de componentes](docs/diagramas/componentes.png)
+## Componentes General
 
-## Entidad Relación
-- [ER Diagram](docs/diagramas/er.png)
+![ComponentesGeneral.png](docs/uml/ComponentesGeneral.png)
 
-## Secuencia
+## Componentes especifico
 
-- [01 Registro usuario](docs/secuencia/registro.md)
-- [02 Login](docs/secuencia/login.md)
-- [03 Gestión principal](docs/secuencia/modulo.md)
+![ComponentesEspecifico.png](docs/uml/ComponentesEspecifico.png)
+
+
 
 ---
 
@@ -213,11 +210,8 @@ Reporte generado con **JaCoCo** y analizado con **SonarQube**
 #  Demo
 
 ## Video Demo
-- [Demo módulo](link-demo)
+- https://youtu.be/yeUNeGnnxpw
 
-## Capturas
-
-Agregar screenshots aquí.
 
 ---
 
