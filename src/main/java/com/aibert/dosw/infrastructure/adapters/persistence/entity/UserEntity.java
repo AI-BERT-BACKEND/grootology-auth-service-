@@ -1,9 +1,11 @@
 package com.aibert.dosw.infrastructure.adapters.persistence.entity;
 
+import com.aibert.dosw.domain.model.user.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -15,8 +17,8 @@ import java.time.LocalDateTime;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String fullName;
@@ -29,6 +31,10 @@ public class UserEntity {
 
     @Column(nullable = false)
     private boolean verified;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     @Column(name = "failed_attempts")
     private Integer failedAttempts;

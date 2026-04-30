@@ -44,11 +44,14 @@ public class LoginService implements LoginUseCase {
 
         resetFailedAttempts(user);
 
-        String token = jwtTokenService.generateToken(user.getEmail(), request.isRememberMe());
+        String token = jwtTokenService.generateToken(
+                user.getEmail(), user.getId(), user.getRole().name(), request.isRememberMe());
+
         return LoginResponseDTO.builder()
                 .id(user.getId())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
+                .role(user.getRole().name())
                 .token(token)
                 .build();
     }
@@ -61,7 +64,7 @@ public class LoginService implements LoginUseCase {
     }
 
     private void handleFailedAttempt(User user) {
-        int attempts = (user.getFailedAttempts() == 0 ? 0 : user.getFailedAttempts()) + 1;
+        int attempts = (user.getFailedAttempts() == null ? 0 : user.getFailedAttempts()) + 1;
         LocalDateTime lockedUntil = attempts >= MAX_ATTEMPTS
                 ? LocalDateTime.now().plusMinutes(LOCK_MINUTES)
                 : user.getLockedUntil();
@@ -71,18 +74,20 @@ public class LoginService implements LoginUseCase {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .verified(user.isVerified())
+                .role(user.getRole())
                 .failedAttempts(attempts >= MAX_ATTEMPTS ? 0 : attempts)
                 .lockedUntil(lockedUntil)
                 .build());
     }
 
     private void resetFailedAttempts(User user) {
-        if (user.getFailedAttempts() > 0 || user.getLockedUntil() != null) {
+        if (user.getFailedAttempts() != null && user.getFailedAttempts() > 0 || user.getLockedUntil() != null) {
             userRepository.save(User.builder()
                     .id(user.getId())
                     .email(user.getEmail())
                     .password(user.getPassword())
                     .verified(user.isVerified())
+                    .role(user.getRole())
                     .failedAttempts(0)
                     .lockedUntil(null)
                     .build());

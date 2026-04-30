@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class JwtTokenService {
@@ -19,11 +20,13 @@ public class JwtTokenService {
     private static final long ONE_HOUR_MS = 3_600_000L;
     private static final long THIRTY_DAYS_MS = 30L * 24 * 3_600_000;
 
-    public String generateToken(String email, boolean rememberMe) {
+    public String generateToken(String email, UUID userId, String role, boolean rememberMe) {
         long expiration = rememberMe ? THIRTY_DAYS_MS : ONE_HOUR_MS;
         Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(email)
+                .claim("userId", userId.toString())
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key, SignatureAlgorithm.HS256)
