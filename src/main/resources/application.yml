@@ -2,14 +2,32 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: auth-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+jwt:
+  secret: ${JWT_SECRET}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
-    url: jdbc:postgresql://localhost:5432/eciplanner_auth
-    username: ${DB_USERNAME}
+    url: ${DB_URL}
+    username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
-
-jwt:
-  secret: ${JWT_SECRET}
+    show-sql: true
+    open-in-view: false
