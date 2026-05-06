@@ -131,8 +131,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: jacoco-report-run${{ github.run_number }}-${{ github.sha }}
-          path: target/site/jacoco/
+          name: jacoco-report-auth-run${{ github.run_number }}-${{ github.sha }}
           retention-days: 7
 
       - name: Add JaCoCo report link to summary
