@@ -53,7 +53,6 @@ public class LoginService implements LoginUseCase {
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .token(token)
-                .profileComplete(user.isProfileComplete())
                 .build();
     }
 
