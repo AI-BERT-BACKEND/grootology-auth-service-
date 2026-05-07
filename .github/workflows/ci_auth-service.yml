@@ -134,7 +134,6 @@ jobs:
           name: jacoco-report-auth-run${{ github.run_number }}-${{ github.sha }}
           path: target/site/jacoco/
           retention-days: 7
-          retention-days: 7
 
       - name: Add JaCoCo report link to summary
         if: always()
