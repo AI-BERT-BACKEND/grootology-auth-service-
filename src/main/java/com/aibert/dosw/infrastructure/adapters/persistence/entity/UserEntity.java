@@ -36,6 +36,9 @@ public class UserEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false)
+    private boolean profileComplete;
+
     @Column(name = "failed_attempts")
     private Integer failedAttempts;
 
