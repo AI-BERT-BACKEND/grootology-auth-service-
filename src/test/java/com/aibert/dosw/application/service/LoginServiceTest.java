@@ -41,6 +41,7 @@ class LoginServiceTest {
                 .password("hashedPassword")
                 .verified(verified)
                 .role(Role.ESTUDIANTE)
+                .profileComplete(true)
                 .failedAttempts(0)
                 .lockedUntil(lockedUntil)
                 .build();
