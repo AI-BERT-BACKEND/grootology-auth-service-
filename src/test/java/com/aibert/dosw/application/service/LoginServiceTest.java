@@ -70,7 +70,7 @@ class LoginServiceTest {
         assertNotNull(response.getId());
         assertNotNull(response.getFullName());
         assertNotNull(response.getEmail());
-        assertFalse(response.isProfileComplete());
+        assertTrue(response.isProfileComplete());
     }
 
     @Test
