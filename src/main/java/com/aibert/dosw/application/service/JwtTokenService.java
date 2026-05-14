@@ -18,10 +18,10 @@ public class JwtTokenService {
     private String secret;
 
     private static final long ONE_HOUR_MS = 3_600_000L;
-    private static final long THIRTY_DAYS_MS = 30L * 24 * 3_600_000;
+    private static final long SEVEN_DAYS_MS = 7L * 24 * 3_600_000;
 
     public String generateToken(String email, UUID userId, String role, boolean rememberMe) {
-        long expiration = rememberMe ? THIRTY_DAYS_MS : ONE_HOUR_MS;
+        long expiration = rememberMe ? SEVEN_DAYS_MS : ONE_HOUR_MS;
         Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(email)
