@@ -184,6 +184,9 @@ class LoginServiceTest {
         assertThrows(com.aibert.dosw.domain.exceptions.AccountInactiveException.class,
                 () -> loginService.login(request));
     }
+
+    @Test
+    void login_cuentaBloqueadaExpirada_permiteLogin() {
         LoginRequestDTO request = buildRequest();
         User userWithExpiredLock = User.builder()
                 .id(UUID.randomUUID())
