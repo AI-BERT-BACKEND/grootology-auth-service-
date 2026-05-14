@@ -166,7 +166,24 @@ class LoginServiceTest {
     }
 
     @Test
-    void login_cuentaBloqueadaExpirada_permiteLogin() {
+    void login_cuentaInactiva_lanzaAccountInactive() {
+        LoginRequestDTO request = mock(LoginRequestDTO.class);
+        when(request.getEmail()).thenReturn("test@mail.escuelaing.edu.co");
+        when(request.getPassword()).thenReturn("password123");
+        User inactiveUser = User.builder()
+                .id(UUID.randomUUID())
+                .email("test@mail.escuelaing.edu.co")
+                .password("hashedPassword")
+                .verified(true)
+                .role(Role.ESTUDIANTE)
+                .status("INACTIVO")
+                .failedAttempts(0)
+                .build();
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(inactiveUser));
+        when(bcryptValidator.matches(any(), any())).thenReturn(true);
+        assertThrows(com.aibert.dosw.domain.exceptions.AccountInactiveException.class,
+                () -> loginService.login(request));
+    }
         LoginRequestDTO request = buildRequest();
         User userWithExpiredLock = User.builder()
                 .id(UUID.randomUUID())

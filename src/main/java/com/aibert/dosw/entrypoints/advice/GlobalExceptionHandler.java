@@ -1,5 +1,6 @@
 package com.aibert.dosw.entrypoints.advice;
 
+import com.aibert.dosw.domain.exceptions.AccountInactiveException;
 import com.aibert.dosw.domain.exceptions.AccountLockedException;
 import com.aibert.dosw.domain.exceptions.AccountNotVerifiedException;
 import com.aibert.dosw.domain.exceptions.InvalidCredentialsException;
@@ -35,5 +36,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccountLockedException.class)
     public ResponseEntity<Map<String, String>> handleLocked(AccountLockedException ex) {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(AccountInactiveException.class)
+    public ResponseEntity<Map<String, String>> handleInactive(AccountInactiveException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
     }
 }

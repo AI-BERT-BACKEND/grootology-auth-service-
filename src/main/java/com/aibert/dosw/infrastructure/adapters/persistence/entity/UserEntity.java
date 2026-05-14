@@ -36,6 +36,9 @@ public class UserEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Column
+    private String status;
+
     @Column(nullable = false)
     private boolean profileComplete;
 

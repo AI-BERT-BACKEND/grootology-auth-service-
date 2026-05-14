@@ -2,6 +2,7 @@ package com.aibert.dosw.application.service;
 
 import com.aibert.dosw.application.dto.request.LoginRequestDTO;
 import com.aibert.dosw.application.dto.response.LoginResponseDTO;
+import com.aibert.dosw.domain.exceptions.AccountInactiveException;
 import com.aibert.dosw.domain.exceptions.AccountLockedException;
 import com.aibert.dosw.domain.exceptions.AccountNotVerifiedException;
 import com.aibert.dosw.domain.exceptions.InvalidCredentialsException;
@@ -40,6 +41,10 @@ public class LoginService implements LoginUseCase {
 
         if (!user.isVerified()) {
             throw new AccountNotVerifiedException();
+        }
+
+        if ("INACTIVO".equals(user.getStatus())) {
+            throw new AccountInactiveException();
         }
 
         resetFailedAttempts(user);
