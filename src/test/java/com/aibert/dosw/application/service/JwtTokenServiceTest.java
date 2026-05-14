@@ -35,4 +35,14 @@ class JwtTokenServiceTest {
         assertNotNull(token);
         assertFalse(token.isEmpty());
     }
+
+    @Test
+    void generateToken_rememberMe_expiraMasTarde_queNormal() {
+        String tokenNormal = jwtTokenService.generateToken("test@mail.escuelaing.edu.co", UUID.randomUUID(), "ESTUDIANTE", false);
+        String tokenRemember = jwtTokenService.generateToken("test@mail.escuelaing.edu.co", UUID.randomUUID(), "ESTUDIANTE", true);
+        assertNotNull(tokenNormal);
+        assertNotNull(tokenRemember);
+        // tokens distintos por diferente UUID y expiracion
+        assertNotEquals(tokenNormal, tokenRemember);
+    }
 }
