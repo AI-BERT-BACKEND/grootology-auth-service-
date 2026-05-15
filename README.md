@@ -206,7 +206,7 @@ Se observa cómo el `AuthController` delega la autenticación al `LoginUseCase`,
 
 <div align="center">
 
-![Diagrama de Clases](docs/uml/Diagrama_de_clases.png)
+![Diagrama_de_Clases.png](docs/uml/Diagrama_de_Clases.png)
 
 </div>
 
@@ -220,7 +220,7 @@ El flujo evidencia la separación de responsabilidades entre controlador, servic
 
 <div align="center">
 
-![Diagrama de Componentes](docs/uml/Diagrama_de_componentes.png)
+![Diagrama_de_componentes.png](docs/uml/Diagrama_de_componentes.png)
 
 </div>
 
