@@ -44,6 +44,9 @@ public class UserEntity {
     @Column(nullable = false)
     private boolean profileComplete;
 
+    @Column(nullable = false)
+    private boolean currentlyWorking;
+
     @Column(name = "failed_attempts")
     private Integer failedAttempts;
 
