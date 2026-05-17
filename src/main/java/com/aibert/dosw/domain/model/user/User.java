@@ -14,7 +14,7 @@ public class User {
     private String password;
     private boolean verified;
     private Role role;
-    private String status;
+    private UserStatus status;
     private boolean profileComplete;
     private Integer failedAttempts;
     private java.time.LocalDateTime lockedUntil;

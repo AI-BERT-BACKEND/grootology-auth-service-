@@ -95,9 +95,7 @@ class LoginServiceTest {
     void login_cuentaNoVerificada_lanzaAccountNotVerified() {
         LoginRequestDTO request = mock(LoginRequestDTO.class);
         when(request.getEmail()).thenReturn("test@mail.escuelaing.edu.co");
-        when(request.getPassword()).thenReturn("password123");
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(buildUser(false, null)));
-        when(bcryptValidator.matches(any(), any())).thenReturn(true);
         assertThrows(AccountNotVerifiedException.class, () -> loginService.login(request));
     }
 
@@ -169,18 +167,16 @@ class LoginServiceTest {
     void login_cuentaInactiva_lanzaAccountInactive() {
         LoginRequestDTO request = mock(LoginRequestDTO.class);
         when(request.getEmail()).thenReturn("test@mail.escuelaing.edu.co");
-        when(request.getPassword()).thenReturn("password123");
         User inactiveUser = User.builder()
                 .id(UUID.randomUUID())
                 .email("test@mail.escuelaing.edu.co")
                 .password("hashedPassword")
                 .verified(true)
                 .role(Role.ESTUDIANTE)
-                .status("INACTIVO")
+                .status(com.aibert.dosw.domain.model.user.UserStatus.INACTIVO)
                 .failedAttempts(0)
                 .build();
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(inactiveUser));
-        when(bcryptValidator.matches(any(), any())).thenReturn(true);
         assertThrows(com.aibert.dosw.domain.exceptions.AccountInactiveException.class,
                 () -> loginService.login(request));
     }

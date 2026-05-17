@@ -6,6 +6,7 @@ import com.aibert.dosw.domain.exceptions.AccountInactiveException;
 import com.aibert.dosw.domain.exceptions.AccountLockedException;
 import com.aibert.dosw.domain.exceptions.AccountNotVerifiedException;
 import com.aibert.dosw.domain.exceptions.InvalidCredentialsException;
+import com.aibert.dosw.domain.model.user.UserStatus;
 import com.aibert.dosw.domain.model.user.User;
 import com.aibert.dosw.domain.ports.in.LoginUseCase;
 import com.aibert.dosw.domain.ports.out.UserRepositoryPort;
@@ -34,17 +35,17 @@ public class LoginService implements LoginUseCase {
 
         checkLock(user);
 
-        if (!bcryptValidator.matches(request.getPassword(), user.getPassword())) {
-            handleFailedAttempt(user);
-            throw new InvalidCredentialsException();
-        }
-
         if (!user.isVerified()) {
             throw new AccountNotVerifiedException();
         }
 
-        if ("INACTIVO".equals(user.getStatus())) {
+        if (UserStatus.INACTIVO.equals(user.getStatus())) {
             throw new AccountInactiveException();
+        }
+
+        if (!bcryptValidator.matches(request.getPassword(), user.getPassword())) {
+            handleFailedAttempt(user);
+            throw new InvalidCredentialsException();
         }
 
         resetFailedAttempts(user);
@@ -81,7 +82,7 @@ public class LoginService implements LoginUseCase {
                 .password(user.getPassword())
                 .verified(user.isVerified())
                 .role(user.getRole())
-                .failedAttempts(attempts >= MAX_ATTEMPTS ? 0 : attempts)
+                .failedAttempts(attempts)
                 .lockedUntil(lockedUntil)
                 .build());
     }

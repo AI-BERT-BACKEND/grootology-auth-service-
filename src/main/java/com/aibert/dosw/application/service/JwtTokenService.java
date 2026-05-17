@@ -21,15 +21,21 @@ public class JwtTokenService {
     private static final long SEVEN_DAYS_MS = 7L * 24 * 3_600_000;
 
     public String generateToken(String email, UUID userId, String role, boolean rememberMe) {
+        return generateToken(email, userId, role, rememberMe, null);
+    }
+
+    public String generateToken(String email, UUID userId, String role, boolean rememberMe, Integer passwordVersion) {
         long expiration = rememberMe ? SEVEN_DAYS_MS : ONE_HOUR_MS;
         Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        return Jwts.builder()
+        var builder = Jwts.builder()
                 .setSubject(email)
                 .claim("userId", userId.toString())
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+                .setExpiration(new Date(System.currentTimeMillis() + expiration));
+        if (passwordVersion != null) {
+            builder.claim("passwordVersion", passwordVersion);
+        }
+        return builder.signWith(key, SignatureAlgorithm.HS256).compact();
     }
 }

@@ -1,6 +1,7 @@
 package com.aibert.dosw.infrastructure.adapters.persistence.entity;
 
 import com.aibert.dosw.domain.model.user.Role;
+import com.aibert.dosw.domain.model.user.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,8 +37,9 @@ public class UserEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String status;
+    private UserStatus status;
 
     @Column(nullable = false)
     private boolean profileComplete;
