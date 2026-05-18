@@ -1,18 +1,18 @@
 <div align="center">
 
-# 🔐 AIBERT — Authentication Service
+# AIBERT — Authentication Service
 
 ### *"Acceso seguro y centralizado para toda la plataforma AIBERT"*
 
 ---
 
-### 🛠️ Stack Tecnológico
+### Stack Tecnológico
 
 ![Java](https://img.shields.io/badge/Java-21-007396?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.3-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-### ☁️ Infraestructura & Calidad
+### Infraestructura & Calidad
 
 ![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Container-2496ED?style=for-the-badge&logo=docker&logoColor=white)
@@ -20,7 +20,7 @@
 ![SonarCloud](https://img.shields.io/badge/SonarCloud-Analysis-F3702A?style=for-the-badge&logo=sonarcloud&logoColor=white)
 ![JaCoCo](https://img.shields.io/badge/JaCoCo-Coverage-brightgreen?style=for-the-badge)
 
-### 🏗️ Arquitectura
+### Arquitectura
 
 ![Hexagonal](https://img.shields.io/badge/Architecture-Hexagonal-blueviolet?style=for-the-badge)
 ![Clean Architecture](https://img.shields.io/badge/Clean-Architecture-blue?style=for-the-badge)
@@ -30,31 +30,31 @@
 
 ---
 
-## 📑 Tabla de Contenidos
+## Tabla de Contenidos
 
-1. [👤 Integrantes](#1--integrantes)
-2. [🎯 Objetivo del Microservicio](#2--objetivo-del-microservicio)
-3. [⚡ Funcionalidades Principales](#3--funcionalidades-principales)
-4. [📋 Estrategia de Versionamiento y Branches](#4--manejo-de-estrategia-de-versionamiento-y-branches)
-5. [⚙️ Tecnologías Utilizadas](#5--tecnologias-utilizadas)
-6. [🧩 Funcionalidad](#6--funcionalidad)
-7. [📊 Diagramas](#7--diagramas)
-8. [⚠️ Manejo de Errores](#8--manejo-de-errores)
-9. [🧪 Evidencia de Pruebas y Ejecución](#9--evidencia-de-las-pruebas-y-como-ejecutarlas)
-10. [🗂️ Organización del Código](#10--codigo-de-la-implementacion-organizado-en-las-respectivas-carpetas)
-11. [🚀 Ejecución del Proyecto](#11--ejecucion-del-proyecto)
-12. [☁️ CI/CD y Despliegue en Azure](#12--evidencia-de-cicd-y-despliegue-en-azure)
-13. [🤝 Contribuciones](#13--contribuciones)
+1. [Integrantes](#1-integrantes)
+2. [Objetivo del Microservicio](#2-objetivo-del-microservicio)
+3. [Funcionalidades Principales](#3-funcionalidades-principales)
+4. [Estrategia de Versionamiento y Branches](#4-manejo-de-estrategia-de-versionamiento-y-branches)
+5. [Tecnologías Utilizadas](#5-tecnologias-utilizadas)
+6. [Funcionalidad](#6-funcionalidad)
+7. [Diagramas](#7-diagramas)
+8. [Manejo de Errores](#8-manejo-de-errores)
+9. [Evidencia de Pruebas y Ejecución](#9-evidencia-de-las-pruebas-y-como-ejecutarlas)
+10. [Organización del Código](#10-codigo-de-la-implementacion-organizado-en-las-respectivas-carpetas)
+11. [Ejecución del Proyecto](#11-ejecucion-del-proyecto)
+12. [CI/CD y Despliegue en Azure](#12-evidencia-de-cicd-y-despliegue-en-azure)
+13. [Contribuciones](#13-contribuciones)
 
 ---
 
-## 1. 👤 Integrantes
+## 1. Integrantes
 
 - **Equipo:** Grootyology
 
 ---
 
-## 2. 🎯 Objetivo del microservicio
+## 2. Objetivo del microservicio
 
 Básicamente este servicio es el portero de AIBERT. Cuando alguien quiere entrar al sistema, pasa por acá primero — valida que seas quien dices ser, te da un token JWT y listo, ya puedes moverte por la plataforma.
 
@@ -62,15 +62,15 @@ La idea es que ningún otro microservicio tenga que preocuparse por autenticaci�
 
 ---
 
-## 3. ⚡ Funcionalidades principales
+## 3. Funcionalidades principales
 
 <div align="center">
 
 <table>
   <thead>
     <tr>
-      <th>🧩 Funcionalidad</th>
-      <th>¿Qué hace?</th>
+      <th>Funcionalidad</th>
+      <th>Descripción</th>
     </tr>
   </thead>
   <tbody>
@@ -101,7 +101,7 @@ La idea es que ningún otro microservicio tenga que preocuparse por autenticaci�
 
 ---
 
-## 4. 📋 Manejo de Estrategia de versionamiento y branches
+## 4. Manejo de Estrategia de versionamiento y branches
 
 Usamos **Git Flow** para no pisarnos entre nosotros y tener siempre una versión estable lista.
 
@@ -125,7 +125,7 @@ Algunas ramas que usamos:
 
 ---
 
-## 5. ⚙️ Tecnologías Utilizadas
+## 5. Tecnologías Utilizadas
 
 | Tecnología | Para qué la usamos |
 |------------|-------------------|
@@ -144,31 +144,31 @@ Algunas ramas que usamos:
 
 ---
 
-## 6. 🧩 Funcionalidad
+## 6. Funcionalidad
 
-### 🔐 Login
+### Login
 
 Mandás email y password, el servicio verifica que todo esté bien y te devuelve un JWT.
 
 **Endpoint:** `POST /api/auth/login`
 
-### 📦 Request
+### Request
 
 <div align="center">
 
-| 🏷️ Campo | 🗃️ Tipo | ⚠️ Restricción | 📝 Descripción |
-|---------|---------|:-------------:|---------------|
+| Campo | Tipo | Restricción | Descripción |
+|-------|------|:-----------:|-------------|
 | email | String | Obligatorio | Tu correo |
 | password | String | Obligatorio | Tu contraseña |
 
 </div>
 
-### 📦 Response
+### Response
 
 <div align="center">
 
-| 🏷️ Campo | 🗃️ Tipo | 📝 Descripción |
-|---------|---------|---------------|
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
 | token | String | El JWT firmado para usar en los demás servicios |
 | expiresAt | LocalDateTime | Cuándo vence el token |
 
@@ -176,19 +176,19 @@ Mandás email y password, el servicio verifica que todo esté bien y te devuelve
 
 ---
 
-### 🔒 Protección de cuentas
+### Protección de cuentas
 
 El servicio detecta automáticamente estos casos y bloquea el acceso:
 
-- **No verificada** → el usuario no confirmó su email todavía.
-- **Inactiva** → la cuenta está desactivada.
-- **Bloqueada** → demasiados intentos fallidos, se bloquea temporalmente.
+- **No verificada** — el usuario no confirmó su email todavía.
+- **Inactiva** — la cuenta está desactivada.
+- **Bloqueada** — demasiados intentos fallidos, se bloquea temporalmente.
 
 ---
 
-## 7. 📊 Diagramas
+## 7. Diagramas
 
-### 🧱 Diagrama de Clases
+### Diagrama de Clases
 
 Muestra cómo está organizado el código por capas: Entrypoints, Application, Domain e Infrastructure, y cómo el `AuthController` delega al `LoginUseCase`.
 
@@ -200,7 +200,7 @@ Muestra cómo está organizado el código por capas: Entrypoints, Application, D
 
 ---
 
-### 🧩 Diagrama de Componentes
+### Diagrama de Componentes
 
 Cómo interactúan los componentes durante el login, con la separación de responsabilidades por puertos y adaptadores.
 
@@ -212,7 +212,7 @@ Cómo interactúan los componentes durante el login, con la separación de respo
 
 ---
 
-### 🔁 Diagrama de Secuencia — `POST /api/auth/login`
+### Diagrama de Secuencia — `POST /api/auth/login`
 
 El flujo completo del login paso a paso: desde que llegan las credenciales hasta que sale el JWT.
 
@@ -224,14 +224,14 @@ El flujo completo del login paso a paso: desde que llegan las credenciales hasta
 
 ---
 
-## 8. ⚠️ Manejo de Errores
+## 8. Manejo de Errores
 
 Hay un `@ControllerAdvice` que atrapa todos los errores y devuelve respuestas limpias y consistentes, sin exponer nada interno.
 
 <div align="center">
 
-| 🔢 Código HTTP | ⚠️ Cuándo pasa |
-|:-------------:|:------------|
+| Código HTTP | Cuándo pasa |
+|:-----------:|-------------|
 | **400 Bad Request** | Faltan campos o el formato está mal. |
 | **401 Unauthorized** | Email o contraseña incorrectos. |
 | **403 Forbidden** | Cuenta bloqueada, inactiva o no verificada. Token inválido o expirado. |
@@ -241,7 +241,7 @@ Hay un `@ControllerAdvice` que atrapa todos los errores y devuelve respuestas li
 
 ---
 
-## 9. 🧪 Evidencia de Pruebas y Ejecución
+## 9. Evidencia de Pruebas y Ejecución
 
 Tenemos pruebas unitarias para todo lo importante:
 
@@ -252,7 +252,7 @@ Tenemos pruebas unitarias para todo lo importante:
 - `GlobalExceptionHandler` — que los errores se manejen bien.
 - `UserRepositoryAdapter` — el adaptador de persistencia.
 
-### 🚀 Cómo correr las pruebas
+### Cómo correr las pruebas
 
 ```bash
 mvn clean test
@@ -267,52 +267,52 @@ mvn clean verify
 
 ---
 
-## 10. 🗂️ Organización del Código (Scaffolding)
+## 10. Organización del Código (Scaffolding)
 
 ```
 auth-service/
 │
-├── 📁 src/
-│   ├── 📁 main/
-│   │   ├── 📁 java/com/aibert/dosw/
-│   │   │   ├── 📁 application/                     # 🔵 CAPA DE APLICACIÓN
-│   │   │   │   ├── 📁 dto/
-│   │   │   │   │   ├── 📁 request/                 # LoginRequestDTO
-│   │   │   │   │   └── 📁 response/                # LoginResponseDTO
-│   │   │   │   └── 📁 service/                     # LoginService, JwtTokenService, TokenBlacklistService
+├── src/
+│   ├── main/
+│   │   ├── java/com/aibert/dosw/
+│   │   │   ├── application/                     # CAPA DE APLICACIÓN
+│   │   │   │   ├── dto/
+│   │   │   │   │   ├── request/                 # LoginRequestDTO
+│   │   │   │   │   └── response/                # LoginResponseDTO
+│   │   │   │   └── service/                     # LoginService, JwtTokenService, TokenBlacklistService
 │   │   │   │
-│   │   │   ├── 📁 config/                          # ⚙️ SecurityConfig, SwaggerConfig
+│   │   │   ├── config/                          # SecurityConfig, SwaggerConfig
 │   │   │   │
-│   │   │   ├── 📁 domain/                          # 🟢 CAPA DE DOMINIO
-│   │   │   │   ├── 📁 exceptions/                  # InvalidCredentials, AccountLocked, AccountInactive, AccountNotVerified
-│   │   │   │   ├── 📁 model/user/                  # User, Role, UserStatus
-│   │   │   │   └── 📁 ports/in/                    # LoginUseCase
+│   │   │   ├── domain/                          # CAPA DE DOMINIO
+│   │   │   │   ├── exceptions/                  # InvalidCredentials, AccountLocked, AccountInactive, AccountNotVerified
+│   │   │   │   ├── model/user/                  # User, Role, UserStatus
+│   │   │   │   └── ports/in/                    # LoginUseCase
 │   │   │   │
-│   │   │   ├── 📁 entrypoints/                     # 🔴 CAPA DE ENTRADA
-│   │   │   │   ├── 📁 rest/controller/             # AuthController
-│   │   │   │   └── 📁 advice/                      # GlobalExceptionHandler
+│   │   │   ├── entrypoints/                     # CAPA DE ENTRADA
+│   │   │   │   ├── rest/controller/             # AuthController
+│   │   │   │   └── advice/                      # GlobalExceptionHandler
 │   │   │   │
-│   │   │   ├── 📁 infrastructure/adapters/         # 🟠 CAPA DE INFRAESTRUCTURA
-│   │   │   │   ├── 📁 adapter/                     # UserRepositoryAdapter
-│   │   │   │   └── 📁 persistence/
-│   │   │   │       ├── 📁 entity/                  # UserEntity
-│   │   │   │       ├── 📁 mapper/                  # UserPersistenceMapper (MapStruct)
-│   │   │   │       └── 📁 repository/              # UserJpaRepository
+│   │   │   ├── infrastructure/adapters/         # CAPA DE INFRAESTRUCTURA
+│   │   │   │   ├── adapter/                     # UserRepositoryAdapter
+│   │   │   │   └── persistence/
+│   │   │   │       ├── entity/                  # UserEntity
+│   │   │   │       ├── mapper/                  # UserPersistenceMapper (MapStruct)
+│   │   │   │       └── repository/              # UserJpaRepository
 │   │   │   │
 │   │   │   └── AuthServiceApplication
 │   │   │
-│   │   └── 📁 resources/                           # application.yml (perfiles: local, qa, prod)
+│   │   └── resources/                           # application.yml (perfiles: local, qa, prod)
 │   │
-│   └── 📁 test/                                    # 🧪 Pruebas unitarias
+│   └── test/                                    # Pruebas unitarias
 │
 └── pom.xml
 ```
 
 ---
 
-## 11. 🚀 Ejecución del Proyecto
+## 11. Ejecución del Proyecto
 
-### 📋 Qué necesitás antes de arrancar
+### Qué necesitás antes de arrancar
 - **Java 21**
 - **Maven 3.8+**
 - **PostgreSQL** corriendo (o tirá Docker)
@@ -327,16 +327,16 @@ DB_PASSWORD=tu_password
 JWT_SECRET=tu_secreto_jwt
 ```
 
-### 🛠️ Opción 1: Maven directo
+### Opción 1: Maven directo
 
 ```bash
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
-📍 **Local:** `http://localhost:8080`
-📚 **Swagger:** `http://localhost:8080/swagger-ui.html`
+**Local:** `http://localhost:8080`  
+**Swagger:** `http://localhost:8080/swagger-ui.html`
 
-### 🐳 Opción 2: Docker Compose
+### Opción 2: Docker Compose
 
 ```bash
 docker-compose up --build -d
@@ -344,7 +344,7 @@ docker-compose up --build -d
 
 ---
 
-## 12. ☁️ CI/CD y Despliegue en Azure
+## 12. CI/CD y Despliegue en Azure
 
 El pipeline se activa solo con cada push o PR a `develop` o `main`. Los pasos son:
 
@@ -366,13 +366,13 @@ El pipeline se activa solo con cada push o PR a `develop` o `main`. Los pasos so
 
 ---
 
-## 13. 🤝 Contribuciones
+## 13. Contribuciones
 
 Trabajamos con **Scrum** en iteraciones cortas. `main` y `develop` están protegidas — todo entra por PR y tiene que pasar el pipeline completo (compilación, tests y SonarCloud) antes de mergearse.
 
 <div align="center">
 
-### 🏆 Proyecto AIBERT
+### Proyecto AIBERT
 
 ![Course](https://img.shields.io/badge/Course-DOSW-orange?style=for-the-badge)
 ![Year](https://img.shields.io/badge/Year-2026-blue?style=for-the-badge)
