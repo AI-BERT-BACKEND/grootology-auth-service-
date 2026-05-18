@@ -17,6 +17,8 @@
 ![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Container-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
+![SonarCloud](https://img.shields.io/badge/SonarCloud-Analysis-F3702A?style=for-the-badge&logo=sonarcloud&logoColor=white)
+![JaCoCo](https://img.shields.io/badge/JaCoCo-Coverage-brightgreen?style=for-the-badge)
 
 ### 🏗️ Arquitectura
 
@@ -54,9 +56,9 @@
 
 ## 2. 🎯 Objetivo del microservicio
 
-El Authentication Service tiene como objetivo centralizar la autenticación de usuarios dentro de la plataforma AIBERT, validando credenciales y generando tokens JWT seguros que permiten a los demás microservicios identificar al usuario sin duplicar lógica de seguridad.
+Básicamente este servicio es el portero de AIBERT. Cuando alguien quiere entrar al sistema, pasa por acá primero — valida que seas quien dices ser, te da un token JWT y listo, ya puedes moverte por la plataforma.
 
-Este microservicio actúa como **la puerta de entrada al sistema**, permitiendo que todos los módulos confíen en un único mecanismo de autenticación y autorización.
+La idea es que ningún otro microservicio tenga que preocuparse por autenticación. Eso es problema de este servicio, y solo de este.
 
 ---
 
@@ -68,21 +70,29 @@ Este microservicio actúa como **la puerta de entrada al sistema**, permitiendo 
   <thead>
     <tr>
       <th>🧩 Funcionalidad</th>
-      <th>Descripción</th>
+      <th>¿Qué hace?</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><strong>Inicio de Sesión</strong></td>
-      <td>Valida credenciales de usuario y permite el acceso al sistema.</td>
+      <td>Revisa tus credenciales y te deja pasar si todo está bien.</td>
     </tr>
     <tr>
       <td><strong>Generación de JWT</strong></td>
-      <td>Emite tokens JWT firmados que son consumidos por los demás microservicios.</td>
+      <td>Te da un token firmado que los demás servicios usan para saber quién eres.</td>
+    </tr>
+    <tr>
+      <td><strong>Blacklist de Tokens</strong></td>
+      <td>Si cerrás sesión, el token queda inválido aunque no haya expirado.</td>
+    </tr>
+    <tr>
+      <td><strong>Protección de Cuentas</strong></td>
+      <td>Si fallás el login varias veces, la cuenta se bloquea un rato. También maneja cuentas inactivas o no verificadas.</td>
     </tr>
     <tr>
       <td><strong>Seguridad Centralizada</strong></td>
-      <td>Evita que cada microservicio maneje su propia lógica de autenticación.</td>
+      <td>Un solo lugar para manejar auth. Los demás servicios no necesitan saber nada de esto.</td>
     </tr>
   </tbody>
 </table>
@@ -93,116 +103,94 @@ Este microservicio actúa como **la puerta de entrada al sistema**, permitiendo 
 
 ## 4. 📋 Manejo de Estrategia de versionamiento y branches
 
-Para el desarrollo del **Authentication Service** se utiliza una estrategia de control de versiones basada en **Git Flow**, la cual permite organizar el trabajo del equipo y separar claramente los cambios en desarrollo de las versiones estables del microservicio.
+Usamos **Git Flow** para no pisarnos entre nosotros y tener siempre una versión estable lista.
 
-Esta estrategia ha sido útil para trabajar de forma ordenada, especialmente al implementar nuevas funcionalidades, ajustes de infraestructura y cambios derivados de nuevos requerimientos.
+### Ramas que manejamos
 
-### Estrategia de Ramas (Git Flow)
+- `main` — lo que está en producción, no se toca directamente.
+- `develop` — acá se integra todo antes de subir a main.
+- `feature/*` — una rama por cada cosa que estemos haciendo.
 
-El repositorio maneja principalmente las siguientes ramas:
+Algunas ramas que usamos:
+- `feature/auth-ci-cd`
+- `feature/dockerizacion`
+- `feature/nuevos-requerimientos`
 
-- `main`
-- `develop`
-- `feature/*`
+### Cómo trabajamos
 
-De manera complementaria, el modelo permite el uso de ramas `release/*` y `hotfix/*` en caso de ser necesarias para estabilizar versiones o corregir errores críticos, aunque el desarrollo cotidiano se ha realizado principalmente mediante ramas de tipo `feature/*`.
-
-### Ramas y propósito
-
-#### `main`
-- Contiene la versión estable del microservicio.
-- Se utiliza como referencia para demostraciones o despliegues.
-- No se realizan desarrollos directos sobre esta rama.
-- Los cambios llegan a `main` únicamente después de haber sido integrados y probados en `develop`.
-
-#### `develop`
-- Rama utilizada para integrar las funcionalidades en desarrollo.
-- Sirve como base para crear nuevas ramas `feature/*`.
-- Permite validar la correcta integración de los cambios antes de considerarlos estables.
-
-#### `feature/*`
-- Ramas utilizadas para desarrollar funcionalidades específicas, mejoras técnicas o tareas relacionadas con infraestructura.
-- Se crean a partir de `develop` y se integran nuevamente mediante Pull Requests.
-- Ejemplos de ramas utilizadas durante el desarrollo del microservicio:
-    - `feature/auth-ci-cd`
-    - `feature/dockerizacion`
-    - `feature/nuevos-requerimientos`
-
-Este enfoque permitió trabajar cada cambio de forma aislada y reducir conflictos durante la integración.
-
-### Flujo de trabajo general
-
-1. Se crea una rama `feature/*` desde `develop`.
-2. Se implementan los cambios correspondientes.
-3. Se validan las modificaciones de forma local.
-4. Se genera un Pull Request hacia `develop`.
-5. Una vez consolidadas las funcionalidades, `develop` se integra a `main` para actualizar la versión estable.
-
-Esta estrategia ha permitido mantener un flujo de desarrollo claro y controlado a lo largo del proyecto.
+1. Crear rama `feature/*` desde `develop`.
+2. Implementar y probar local.
+3. Abrir PR hacia `develop`.
+4. Cuando `develop` está estable, se mergea a `main`.
 
 ---
 
 ## 5. ⚙️ Tecnologías Utilizadas
 
-| Tecnología | Uso principal |
-|------------|---------------|
-| **Java 21** | Lenguaje base del microservicio, aprovechando mejoras de rendimiento, compatibilidad moderna y soporte a largo plazo. |
-| **Spring Boot** | Framework principal para la creación del microservicio y la exposición de APIs REST relacionadas con el perfil del usuario. |
-| **Spring Data JPA** | Abstracción para el acceso a datos y manejo de entidades, permitiendo interactuar con la base de datos de forma sencilla y desacoplada. |
-| **PostgreSQL** | Base de datos relacional utilizada para persistir la información personal y académica del usuario de manera estructurada. |
-| **Apache Maven** | Gestión de dependencias, construcción y empaquetado del proyecto. |
-| **Docker** | Contenerización del microservicio para facilitar su despliegue y ejecución en distintos entornos. |
-| **GitHub Actions** | Automatización de procesos de integración continua (CI), validación del código y ejecución de pruebas. |
+| Tecnología | Para qué la usamos |
+|------------|-------------------|
+| **Java 21** | Lenguaje base. |
+| **Spring Boot 3.4.3** | El framework que levanta todo. |
+| **Spring Security** | Filtros de seguridad y configuración HTTP. |
+| **Spring Data JPA** | Para hablar con la base de datos sin tanto boilerplate. |
+| **PostgreSQL** | Donde guardamos los usuarios. |
+| **jjwt** | Para generar y validar los tokens JWT. |
+| **MapStruct** | Mapeo entre dominio y persistencia sin escribir código a mano. |
+| **Apache Maven** | Build y dependencias. |
+| **Docker** | Para correr el servicio en cualquier lado. |
+| **GitHub Actions** | El pipeline de CI/CD. |
+| **SonarCloud** | Análisis de calidad del código. |
+| **JaCoCo** | Ver qué tan bien cubrimos con los tests. |
 
 ---
 
 ## 6. 🧩 Funcionalidad
 
-### 🔐 Inicio de Sesión
+### 🔐 Login
 
-Permite autenticar a un usuario dentro del sistema AIBERT validando sus credenciales y generando un token JWT que será utilizado para autorizar las peticiones a los demás microservicios.
+Mandás email y password, el servicio verifica que todo esté bien y te devuelve un JWT.
 
-**Endpoint principal:**  
-`POST /api/auth/login`
+**Endpoint:** `POST /api/auth/login`
 
----
-
-### 📦 Estructura de la Solicitud (Request)
+### 📦 Request
 
 <div align="center">
 
 | 🏷️ Campo | 🗃️ Tipo | ⚠️ Restricción | 📝 Descripción |
 |---------|---------|:-------------:|---------------|
-| email | String | Obligatorio | Correo electrónico del usuario |
-| password | String | Obligatorio | Contraseña asociada a la cuenta |
+| email | String | Obligatorio | Tu correo |
+| password | String | Obligatorio | Tu contraseña |
 
 </div>
 
----
-
-### 📦 Estructura de la Respuesta (Response)
+### 📦 Response
 
 <div align="center">
 
 | 🏷️ Campo | 🗃️ Tipo | 📝 Descripción |
 |---------|---------|---------------|
-| token | String | Token JWT firmado para autenticación |
-| expiresAt | LocalDateTime | Fecha y hora de expiración del token |
+| token | String | El JWT firmado para usar en los demás servicios |
+| expiresAt | LocalDateTime | Cuándo vence el token |
 
 </div>
 
 ---
 
-## 7. 📊 Diagramas
+### 🔒 Protección de cuentas
 
+El servicio detecta automáticamente estos casos y bloquea el acceso:
+
+- **No verificada** → el usuario no confirmó su email todavía.
+- **Inactiva** → la cuenta está desactivada.
+- **Bloqueada** → demasiados intentos fallidos, se bloquea temporalmente.
 
 ---
 
-### 🧱 Diagrama de Clases — Authentication Service
+## 7. 📊 Diagramas
 
-El siguiente diagrama de clases representa la organización interna del microservicio, siguiendo una arquitectura hexagonal dividida en capas de **Entrypoints**, **Application**, **Domain** e **Infrastructure**.
+### 🧱 Diagrama de Clases
 
-Se observa cómo el `AuthController` delega la autenticación al `LoginUseCase`, el manejo de DTOs de entrada y salida, las entidades de dominio involucradas y las excepciones asociadas al proceso de autenticación.
+Muestra cómo está organizado el código por capas: Entrypoints, Application, Domain e Infrastructure, y cómo el `AuthController` delega al `LoginUseCase`.
 
 <div align="center">
 
@@ -212,11 +200,9 @@ Se observa cómo el `AuthController` delega la autenticación al `LoginUseCase`,
 
 ---
 
-### 🧩 Diagrama de Componentes — Authentication Service
+### 🧩 Diagrama de Componentes
 
-El diagrama de componentes muestra la interacción entre los principales componentes del microservicio durante el proceso de autenticación.
-
-El flujo evidencia la separación de responsabilidades entre controlador, servicio de aplicación, caso de uso y acceso a persistencia mediante puertos y adaptadores, finalizando en la base de datos de usuarios.
+Cómo interactúan los componentes durante el login, con la separación de responsabilidades por puertos y adaptadores.
 
 <div align="center">
 
@@ -228,9 +214,7 @@ El flujo evidencia la separación de responsabilidades entre controlador, servic
 
 ### 🔁 Diagrama de Secuencia — `POST /api/auth/login`
 
-El diagrama de secuencia describe el flujo completo del proceso de inicio de sesión. El usuario envía sus credenciales al `AuthController`, el cual delega la petición al `LoginService` y posteriormente al `LoginUseCase`.
-
-Durante el flujo se realiza la consulta del usuario mediante el `UserRepositoryPort`, su implementación en el adaptador correspondiente y el acceso a la base de datos. En caso de credenciales válidas, se genera el token JWT y se retorna la respuesta al cliente.
+El flujo completo del login paso a paso: desde que llegan las credenciales hasta que sale el JWT.
 
 <div align="center">
 
@@ -242,53 +226,48 @@ Durante el flujo se realiza la consulta del usuario mediante el `UserRepositoryP
 
 ## 8. ⚠️ Manejo de Errores
 
-El **Authentication Service** implementa un mecanismo centralizado de manejo de errores con el fin de garantizar respuestas claras, consistentes y seguras ante los distintos escenarios que pueden ocurrir durante el proceso de autenticación.
-
-A través de un **manejador global de excepciones** , se interceptan errores tanto de validación como del dominio de negocio, evitando exponer información sensible y manteniendo un formato de respuesta uniforme para el cliente.
-
-Este enfoque permite que el frontend y los demás microservicios puedan manejar los errores de forma predecible y desacoplada de la implementación interna.
-
----
-
-### 📊 Tipos de errores manejados
+Hay un `@ControllerAdvice` que atrapa todos los errores y devuelve respuestas limpias y consistentes, sin exponer nada interno.
 
 <div align="center">
 
-| 🔢 Código HTTP | ⚠️ Escenario |
+| 🔢 Código HTTP | ⚠️ Cuándo pasa |
 |:-------------:|:------------|
-| **400 Bad Request** | Datos inválidos en la petición, campos obligatorios faltantes o formatos incorrectos. |
-| **401 Unauthorized** | Credenciales incorrectas durante el inicio de sesión. |
-| **403 Forbidden** | Token JWT inválido, expirado o no autorizado para acceder al recurso. |
-| **500 Internal Server Error** | Error inesperado en el servidor durante el proceso de autenticación. |
+| **400 Bad Request** | Faltan campos o el formato está mal. |
+| **401 Unauthorized** | Email o contraseña incorrectos. |
+| **403 Forbidden** | Cuenta bloqueada, inactiva o no verificada. Token inválido o expirado. |
+| **500 Internal Server Error** | Algo explotó en el servidor. |
 
 </div>
 
 ---
 
-Cuando ocurre un error, el servicio retorna únicamente la información necesaria para que el cliente pueda reaccionar adecuadamente, sin revelar detalles internos del sistema, reforzando así las buenas prácticas de seguridad y manejo de excepciones.
-
----
-
 ## 9. 🧪 Evidencia de Pruebas y Ejecución
 
-El microservicio cuenta con **pruebas unitarias** sobre los casos de uso principales.
+Tenemos pruebas unitarias para todo lo importante:
 
+- `LoginService` — los flujos de autenticación y los casos de error.
+- `JwtTokenService` — generación y validación de tokens.
+- `TokenBlacklistService` — invalidación de tokens.
+- `AuthController` — los endpoints.
+- `GlobalExceptionHandler` — que los errores se manejen bien.
+- `UserRepositoryAdapter` — el adaptador de persistencia.
 
-### 🚀 Cómo ejecutar las pruebas
-
-#### 1️⃣ Ejecutar todas las pruebas unitarias
-
-El siguiente comando ejecuta todas las pruebas del microservicio:
+### 🚀 Cómo correr las pruebas
 
 ```bash
 mvn clean test
 ```
 
+Para ver el reporte de cobertura con JaCoCo:
+
+```bash
+mvn clean verify
+# El reporte queda en: target/site/jacoco/index.html
+```
+
 ---
 
 ## 10. 🗂️ Organización del Código (Scaffolding)
-
-El microservicio sigue una arquitectura hexagonal (puertos y adaptadores):
 
 ```
 auth-service/
@@ -298,58 +277,66 @@ auth-service/
 │   │   ├── 📁 java/com/aibert/dosw/
 │   │   │   ├── 📁 application/                     # 🔵 CAPA DE APLICACIÓN
 │   │   │   │   ├── 📁 dto/
-│   │   │   │   │   ├── 📁 request/                 # DTOs de entrada (LoginRequest)
-│   │   │   │   │   └── 📁 response/                # DTOs de salida (LoginResponse)
-│   │   │   │   └── 📁 service/                     # Lógica de aplicación (LoginService)
+│   │   │   │   │   ├── 📁 request/                 # LoginRequestDTO
+│   │   │   │   │   └── 📁 response/                # LoginResponseDTO
+│   │   │   │   └── 📁 service/                     # LoginService, JwtTokenService, TokenBlacklistService
 │   │   │   │
-│   │   │   ├── 📁 config/                          # ⚙️ CONFIGURACIONES
-│   │   │   │                                   # Seguridad, JWT, filtros
+│   │   │   ├── 📁 config/                          # ⚙️ SecurityConfig, SwaggerConfig
 │   │   │   │
 │   │   │   ├── 📁 domain/                          # 🟢 CAPA DE DOMINIO
-│   │   │   │   ├── 📁 exceptions/                  # Excepciones del dominio
-│   │   │   │   ├── 📁 model/user/                  # Entidad User
-│   │   │   │   └── 📁 ports/                       # Puertos In / Out
-│   │   │   │       ├── 📁 in/
-│   │   │   │       └── 📁 out/
+│   │   │   │   ├── 📁 exceptions/                  # InvalidCredentials, AccountLocked, AccountInactive, AccountNotVerified
+│   │   │   │   ├── 📁 model/user/                  # User, Role, UserStatus
+│   │   │   │   └── 📁 ports/in/                    # LoginUseCase
 │   │   │   │
 │   │   │   ├── 📁 entrypoints/                     # 🔴 CAPA DE ENTRADA
-│   │   │   │   ├── 📁 restcontroller/              # AuthController
-│   │   │   │   └── 📁 advice/                      # Manejo global de errores
+│   │   │   │   ├── 📁 rest/controller/             # AuthController
+│   │   │   │   └── 📁 advice/                      # GlobalExceptionHandler
 │   │   │   │
 │   │   │   ├── 📁 infrastructure/adapters/         # 🟠 CAPA DE INFRAESTRUCTURA
-│   │   │   │   ├── 📁 adapter/                     # Implementación de puertos
+│   │   │   │   ├── 📁 adapter/                     # UserRepositoryAdapter
 │   │   │   │   └── 📁 persistence/
-│   │   │   │       ├── 📁 entity/                  # Entidad JPA
-│   │   │   │       ├── 📁 mapper/                  # Mapeadores dominio ↔ persistencia
-│   │   │   │       └── 📁 repository/              # Repositorios JPA
+│   │   │   │       ├── 📁 entity/                  # UserEntity
+│   │   │   │       ├── 📁 mapper/                  # UserPersistenceMapper (MapStruct)
+│   │   │   │       └── 📁 repository/              # UserJpaRepository
 │   │   │   │
-│   │   │   └── AuthServiceApplication            # Punto de arranque Spring Boot
+│   │   │   └── AuthServiceApplication
 │   │   │
-│   │   └── 📁 resources/                           # application.yml
+│   │   └── 📁 resources/                           # application.yml (perfiles: local, qa, prod)
 │   │
-│   └── 📁 test/                                    # 🧪 PRUEBAS UNITARIAS
+│   └── 📁 test/                                    # 🧪 Pruebas unitarias
 │
-└── pom.xml         
+└── pom.xml
 ```
 
 ---
 
 ## 11. 🚀 Ejecución del Proyecto
 
-### 📋 Prerrequisitos
+### 📋 Qué necesitás antes de arrancar
 - **Java 21**
 - **Maven 3.8+**
-- **Docker** (Opcional)
+- **PostgreSQL** corriendo (o tirá Docker)
+- Las variables de entorno del `.env.example`
 
-### 🛠️ Opción 1: Ejecución Local (Maven)
+### Variables de entorno
+
+```env
+DB_URL=jdbc:postgresql://localhost:5432/auth_db
+DB_USER=postgres
+DB_PASSWORD=tu_password
+JWT_SECRET=tu_secreto_jwt
+```
+
+### 🛠️ Opción 1: Maven directo
 
 ```bash
-mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
-📍 **URL Local:** `http://localhost:8080` (o el puerto configurado)  
-📚 **Documentación API (Swagger):** `http://localhost:8080/swagger-ui.html`
 
-### 🐳 Opción 2: Ejecución con Docker (Si se incluye Dockerfile)
+📍 **Local:** `http://localhost:8080`
+📚 **Swagger:** `http://localhost:8080/swagger-ui.html`
+
+### 🐳 Opción 2: Docker Compose
 
 ```bash
 docker-compose up --build -d
@@ -359,15 +346,29 @@ docker-compose up --build -d
 
 ## 12. ☁️ CI/CD y Despliegue en Azure
 
-El proyecto tiene capacidad para desplegarse mediante GitHub Actions hacia Azure App Service o un entorno contenedorizado en la nube.
-Se definen perfiles como `dev` y `prod` en `application.yml` para gestionar la cadena de conexión de MongoDB y las keys de Gemini/Groq.
+El pipeline se activa solo con cada push o PR a `develop` o `main`. Los pasos son:
+
+1. **Compilation** — compila el proyecto.
+2. **Tests** — corre los tests con H2 en memoria y publica resultados.
+3. **Analysis** — genera el reporte JaCoCo y lo manda a SonarCloud.
+4. **Build & Push Image** — construye la imagen Docker y la sube a `ghcr.io`.
+5. **Deploy to QA** — despliega en Azure Container Apps cuando hay push a `develop`.
+6. **Deploy to PROD** — despliega en producción cuando hay push a `main`.
+
+### Secrets que necesitás configurar en GitHub
+
+| Secret | Para qué |
+|--------|----------|
+| `SONAR_TOKEN` | Análisis con SonarCloud |
+| `AZURE_CREDENCIALES_QA` | Deploy en QA |
+| `AZURE_CREDENCIALES_PROD` | Deploy en producción |
+| `GHCR_TOKEN` | Subir imagen a GitHub Container Registry |
 
 ---
 
 ## 13. 🤝 Contribuciones
 
-### Metodología
-Se utiliza **Scrum** con iteraciones cortas, asegurando entregas continuas y mejora de valor. Las ramas principales son protegidas y todos los PRs deben cumplir validación estática (SonarQube) y ejecutar pipelines de CI.
+Trabajamos con **Scrum** en iteraciones cortas. `main` y `develop` están protegidas — todo entra por PR y tiene que pasar el pipeline completo (compilación, tests y SonarCloud) antes de mergearse.
 
 <div align="center">
 
