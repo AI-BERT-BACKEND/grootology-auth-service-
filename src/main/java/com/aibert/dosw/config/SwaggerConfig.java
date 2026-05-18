@@ -14,7 +14,10 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info().title("Auth Service API").version("1.0.0"))
+                .info(new Info()
+                        .title("AIBERT — Auth Service API")
+                        .version("1.0.0")
+                        .description("Handles user authentication for the AIBERT platform. Validates credentials, issues signed JWT tokens, and manages token invalidation via blacklist."))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer"))
                 .components(new Components().addSecuritySchemes("Bearer",
                         new SecurityScheme()
