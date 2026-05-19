@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserAuthDTO {
     private UUID id;
+    private String fullName;
     private String email;
     private String password;
     private boolean verified;

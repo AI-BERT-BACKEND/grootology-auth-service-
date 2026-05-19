@@ -46,6 +46,7 @@ public class ProfileFeignAdapter implements UserRepositoryPort {
     private User toUser(UserAuthDTO dto) {
         return User.builder()
                 .id(dto.getId())
+                .fullName(dto.getFullName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .verified(dto.isVerified())
