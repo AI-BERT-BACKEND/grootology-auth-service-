@@ -18,11 +18,11 @@ jwt:
   secret: ${JWT_SECRET}
 
 app:
-  base-url: ${APP_BASE_URL:http://localhost:8080}
+  base-url: ${APP_BASE_URL:http://localhost:1500}
 
 feign:
   profile-service:
-    url: ${PROFILE_SERVICE_URL:http://localhost:8081}
+    url: ${PROFILE_SERVICE_URL:http://localhost:1501}
 
 ---
 spring:
